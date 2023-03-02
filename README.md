@@ -1,2 +1,2 @@
 # Spline
-Tiny Spline math library
+A lightweight library implementing bezier spline math
