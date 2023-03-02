@@ -21,18 +21,36 @@ namespace iShape.Spline {
             float s = 1f / count;
             float t = 0;
             for (int i = 0; i < count; i++) {
-                result[i] = GetPoint(t);
+                result[i] = Point(t);
                 t += s;
             }
             
-            result[count] = GetPoint(1);
+            result[count] = Point(1);
 
             return result;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private float2 GetPoint(float k) {
-            return SplineMath.GetPointFromCubic(pointA, pointB, anchor, k);
+        public float2 Point(float k) {
+            return Spline.PointForCubic(pointA, pointB, anchor, k);
+        }
+        
+        public float Length(int stepCount) {
+            var prevPoint = Point(0f);
+
+            float step = 1.0f / stepCount;
+            float path = step;
+            float length = 0f;
+
+            for (int i = 0; i < stepCount; i++) {
+                var nextPoint = Point(path);
+                length += math.distance(nextPoint, prevPoint);
+
+                prevPoint = nextPoint;
+                path += step;
+            }
+
+            return length;
         }
     }
 
