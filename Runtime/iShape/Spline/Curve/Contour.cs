@@ -6,7 +6,7 @@ namespace iShape.Spline {
 
     public readonly struct Contour {
 
-        private readonly Spline[] splines;
+        public readonly Spline[] splines;
         private readonly float[] lengths;
 
         public Contour(NativeArray<Anchor> anchors, bool isClosed, int stepCount = 20) {

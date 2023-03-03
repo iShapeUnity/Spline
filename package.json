@@ -1,6 +1,6 @@
 {
   "name": "com.ishape.spline",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "displayName": "iShape.Spline",
   "description": "A lightweight library implementing bezier spline math.",
   "unity": "2022.2",

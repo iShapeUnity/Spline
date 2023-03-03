@@ -5,7 +5,7 @@ namespace iShape.Spline {
     
     public readonly struct Curve {
         
-        private readonly Spline[] splines;
+        public readonly Spline[] splines;
         public readonly float length;
         private readonly Range[] ranges;
         private readonly bool isClosed;
