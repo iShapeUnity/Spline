@@ -1,5 +1,3 @@
-
-using System;
 using System.Runtime.CompilerServices;
 using Unity.Collections;
 using Unity.Mathematics;
@@ -64,10 +62,9 @@ namespace iShape.Spline {
         
         public float2 Point(float k) {
             return type switch {
-                Type.line => PointForLine(pointA, pointB, k),
                 Type.cubic => PointForCubic(pointA, pointB, anchorA, k),
                 Type.quartic => PointForQuartic(pointA, pointB, anchorA, anchorB, k),
-                _ => throw new ArgumentOutOfRangeException()
+                _ => PointForLine(pointA, pointB, k)
             };
         }
         
