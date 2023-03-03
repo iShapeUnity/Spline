@@ -9,7 +9,7 @@ namespace iShape.Spline {
         private readonly Spline[] splines;
         private readonly float[] lengths;
 
-        public Contour(Anchor[] anchors, bool isClosed, int stepCount = 20) {
+        public Contour(NativeArray<Anchor> anchors, bool isClosed, int stepCount = 20) {
             int n = anchors.Length;
             int m = isClosed ? n : n - 1;
             splines = new Spline[m];

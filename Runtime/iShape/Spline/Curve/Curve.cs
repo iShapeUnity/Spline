@@ -4,13 +4,13 @@ using Unity.Mathematics;
 namespace iShape.Spline {
     
     public readonly struct Curve {
-
-        public readonly Spline[] splines;
+        
+        private readonly Spline[] splines;
         public readonly float length;
         private readonly Range[] ranges;
         private readonly bool isClosed;
 
-        public Curve(Anchor[] anchors, bool isClosed, int stepCount = 20) {
+        public Curve(NativeArray<Anchor> anchors, bool isClosed, int stepCount = 20) {
             this.isClosed = isClosed;
             int n = anchors.Length;
             

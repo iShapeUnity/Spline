@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
 
 namespace iShape.Spline {
 
     [System.Serializable]
-    public class Anchor {
+    public struct Anchor {
         
         public enum Type {
             point,
@@ -12,64 +12,34 @@ namespace iShape.Spline {
             doublePinch
         }
         
-        public Type type = Type.point;
-        public bool IsSelectedPoint = false;
-        public bool IsSelectedNextPinch = false;
-        public bool IsSelectedPrevPinch = false;
+        public Type type;
         
-        // is highlighted as neighbour
-        public bool isHighlighted;
-
-        // is highlighted as candidate for multi selection
-        public bool IsMultiSelection = false;
-        
-        public Vector2 NextPoint;
-        public Vector2 PrevPoint;
-        public Vector2 Position;
+        public float2 NextPoint;
+        public float2 PrevPoint;
+        public float2 Position;
 
         public bool IsNextPinchAvailable => type is Type.nextPinch or Type.doublePinch;
         public bool IsPrevPinchAvailable => type is Type.prevPinch or Type.doublePinch;
 
-        public bool IsVisible => IsSelectedNextPinch || IsSelectedPrevPinch || IsSelectedPoint || isHighlighted;
-        
-        public void Deselect() {
-            this.IsSelectedPoint = false;
-            this.IsSelectedNextPinch = false;
-            this.IsSelectedPrevPinch = false;
-            this.isHighlighted = false;
-            this.IsMultiSelection = false;
+        public Anchor(float2 Position) {
+            this.Position = Position;
+            this.PrevPoint = float2.zero;
+            this.NextPoint = float2.zero;
+            this.type = Type.point;
         }
         
-        public void Transform(Vector2 position) {
-            var delta = position - Position;
-            NextPoint += delta;
-            PrevPoint += delta;
-            Position = position;
-        }
-
-        public void Move(Vector2 delta) {
-            NextPoint += delta;
-            PrevPoint += delta;
-            Position += delta;
-        }
-
-        public Anchor(Vector2 position, Vector2 prevPoint, Vector2 nextPoint) {
-            Position = position;
-            PrevPoint = prevPoint;
-            NextPoint = nextPoint;
-        }
-
-
-        public Anchor(Anchor anchor, Vector2 move) {
-            Position = anchor.Position + move;
-            PrevPoint = anchor.PrevPoint + move;
-            NextPoint = anchor.NextPoint + move;
+        public Anchor(float2 Position, float2 PrevPoint, float2 NextPoint) {
+            this.Position = Position;
+            this.PrevPoint = PrevPoint;
+            this.NextPoint = NextPoint;
+            this.type = Type.doublePinch;
         }
         
-        public Anchor(Vector2 position) {
-            Position = position;
-            PrevPoint = Vector2.zero;
-            NextPoint = Vector2.zero;
+        public Anchor(float2 Position, float2 PrevPoint, float2 NextPoint, Type type) {
+            this.Position = Position;
+            this.PrevPoint = PrevPoint;
+            this.NextPoint = NextPoint;
+            this.type = type;
         }
     }
 
