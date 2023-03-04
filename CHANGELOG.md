@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.5] - 2023-03-04
+
+### Added
+
+- Contour and Curve Convert to Native struct
+
 ## [0.0.4] - 2023-03-04
 
 ### Added

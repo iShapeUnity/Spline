@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace iShape.Spline {
@@ -10,7 +11,7 @@ namespace iShape.Spline {
 
     internal static class SegmentExtensions
     {
-        internal static int FindIndex(this Range[] ranges, float value)
+        internal static int FindIndex(this NativeArray<Range> ranges, float value)
         {
             float x = value.Normalize();
             int n = ranges.Length;

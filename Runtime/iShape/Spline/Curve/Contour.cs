@@ -4,28 +4,33 @@ using Unity.Mathematics;
 
 namespace iShape.Spline {
 
-    public readonly struct Contour {
+    public struct Contour {
 
-        public readonly Spline[] splines;
+        public NativeArray<Spline> splines;
         public readonly float length;
-        private readonly float[] lengths;
+        private NativeArray<float> lengths;
 
-        public Contour(NativeArray<Anchor> anchors, bool isClosed, int stepCount = 20) {
+        public Contour(NativeArray<Anchor> anchors, bool isClosed, int countPerSpline, Allocator allocator) {
             int n = anchors.Length;
             int m = isClosed ? n : n - 1;
-            splines = new Spline[m];
-            lengths = new float[m];
+            splines = new NativeArray<Spline>(m, allocator);
+            lengths = new NativeArray<float>(m, allocator);
             float len = 0f;
             for (int i = 0; i < m; i++) {
                 int j = (i + 1) % n;
                 var spline = SplineBuilder.Create(anchors[i], anchors[j]);
                 splines[i] = spline;
-                float l = spline.Length(stepCount);
+                float l = spline.Length(countPerSpline);
                 lengths[i] = l;
                 len += l;
             }
 
             this.length = len;
+        }
+
+        public void Dispose() {
+            splines.Dispose();
+            lengths.Dispose();
         }
 
         public NativeArray<float2> GetPoints(float step, float2 pos, Allocator allocator) {

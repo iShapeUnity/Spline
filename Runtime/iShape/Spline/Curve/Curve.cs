@@ -3,19 +3,19 @@ using Unity.Mathematics;
 
 namespace iShape.Spline {
     
-    public readonly struct Curve {
+    public struct Curve {
         
-        public readonly Spline[] splines;
+        public NativeArray<Spline> splines;
         public readonly float length;
-        private readonly Range[] ranges;
+        private NativeArray<Range> ranges;
         private readonly bool isClosed;
 
-        public Curve(NativeArray<Anchor> anchors, bool isClosed, int stepCount = 20) {
+        public Curve(NativeArray<Anchor> anchors, bool isClosed, int countPerSpline, Allocator allocator) {
             this.isClosed = isClosed;
             int n = anchors.Length;
             
             int m = isClosed ? n : n - 1;         
-            splines = new Spline[m];
+            splines = new NativeArray<Spline>(m, allocator);
             var lengths = new float[m];
             
             float l = 0f;
@@ -23,14 +23,14 @@ namespace iShape.Spline {
             for (int i = 0; i < m; i++) {
                 int j = (i + 1) % n;
                 var spline = SplineBuilder.Create(anchors[i], anchors[j]);
-                float dl = spline.Length(stepCount);
+                float dl = spline.Length(countPerSpline);
                 splines[i] = spline;
                 lengths[i] = dl;
                 l += dl;
             }
 
             length = l;
-            ranges = new Range[m];
+            ranges = new NativeArray<Range>(m, allocator);
             
             float w = 0f;
             
@@ -46,6 +46,11 @@ namespace iShape.Spline {
 
                 w += dw;
             }
+        }
+        
+        public void Dispose() {
+            splines.Dispose();
+            ranges.Dispose();
         }
 
         public NativeArray<float2> GetPoints(float step, float2 pos, Allocator allocator) {
