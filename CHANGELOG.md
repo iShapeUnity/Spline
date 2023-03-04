@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.4] - 2023-03-04
+
+### Added
+
+- Contour.length
+
 ## [0.0.3] - 2023-03-03
 
 ### Added

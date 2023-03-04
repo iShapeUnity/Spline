@@ -3,8 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Unity.Mathematics",
-	"Unity.Collections",
-        "UnityEngine"
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
