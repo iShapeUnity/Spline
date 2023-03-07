@@ -8,7 +8,7 @@ namespace iShape.Spline {
         public NativeArray<Spline> splines;
         public readonly float length;
         private NativeArray<Range> ranges;
-        private readonly bool isClosed;
+        public readonly bool isClosed;
 
         public Curve(NativeArray<Anchor> anchors, bool isClosed, int countPerSpline, Allocator allocator) {
             this.isClosed = isClosed;
@@ -114,12 +114,15 @@ namespace iShape.Spline {
 
             int count = (int)(w / dw + 0.5f);
             float s = w / count;
-            
-            var result = new NativeArray<float2>(count + 1, allocator);
+            if (!isClosed) {
+                count += 1;
+            }
+
+            var result = new NativeArray<float2>(count, allocator);
 
             var r = ranges[i];
             var t = start;
-            for (int j = 0; j <= count; j++) {
+            for (int j = 0; j < count; j++) {
                 float k = (t - r.start) / r.weight;
                 var p = sp.Point(k) + pos;
                 result[j] = p;

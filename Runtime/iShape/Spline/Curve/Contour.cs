@@ -8,11 +8,13 @@ namespace iShape.Spline {
 
         public NativeArray<Spline> splines;
         public readonly float length;
+        public readonly bool isClosed;
         private NativeArray<float> lengths;
 
         public Contour(NativeArray<Anchor> anchors, bool isClosed, int countPerSpline, Allocator allocator) {
             int n = anchors.Length;
             int m = isClosed ? n : n - 1;
+            this.isClosed = isClosed;
             splines = new NativeArray<Spline>(m, allocator);
             lengths = new NativeArray<float>(m, allocator);
             float len = 0f;
@@ -36,7 +38,7 @@ namespace iShape.Spline {
         public NativeArray<float2> GetPoints(float step, float2 pos, Allocator allocator) {
             int n = splines.Length;
 
-            int count = 1;
+            int count = isClosed ? 1 : 0;
             for (int i = 0; i < n; i++) {
                 float dl = lengths[i];
                 int m = (int)(dl / step + 0.5f);
@@ -61,8 +63,10 @@ namespace iShape.Spline {
                     t += s;
                 }
             }
-            
-            result[index] = splines[n - 1].Point(1) + pos;
+
+            if (!isClosed) {
+                result[index] = splines[n - 1].Point(1) + pos;
+            }
 
             return result;
         }

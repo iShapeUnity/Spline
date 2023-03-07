@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.6] - 2023-03-07
+
+### Fixes
+
+- Contour and Curve last point for closed path
+
 ## [0.0.5] - 2023-03-04
 
 ### Added
