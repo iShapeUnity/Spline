@@ -38,7 +38,7 @@ namespace iShape.Spline {
         public NativeArray<float2> GetPoints(float step, float2 pos, Allocator allocator) {
             int n = splines.Length;
 
-            int count = isClosed ? 1 : 0;
+            int count = isClosed ? 0 : 1;
             for (int i = 0; i < n; i++) {
                 float dl = lengths[i];
                 int m = (int)(dl / step + 0.5f);
