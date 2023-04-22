@@ -68,8 +68,8 @@ namespace iShape.Spline {
             };
         }
         
-        public NativeArray<float2> Points(float stepLength, Allocator allocator) {
-            float length = Length(20);
+        public NativeArray<float2> Points(float stepLength, Allocator allocator, int count = 20) {
+            float length = Length(count);
             int n = (int)(length / stepLength + 0.5f);
             float s = 1.0f / n;
             float t = 0;
@@ -81,6 +81,21 @@ namespace iShape.Spline {
             }
             
             result[n] = Point(t);
+
+            return result;
+        }
+        
+        public NativeArray<float2> Points(int count, Allocator allocator) {
+            float s = 1.0f / count;
+            float t = 0;
+            var result = new NativeArray<float2>(count + 1, allocator);
+            
+            for (int i = 0; i < count; i++) {
+                result[i] = Point(t);
+                t += s;
+            }
+            
+            result[count] = Point(t);
 
             return result;
         }

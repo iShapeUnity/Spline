@@ -2,7 +2,7 @@ namespace iShape.Spline {
 
     public static class SplineBuilder {
 
-        internal static Spline Create(Anchor first, Anchor second) {
+        public static Spline Create(Anchor first, Anchor second) {
             var pA = first.Position;
             var pB = second.Position;
 
